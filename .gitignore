@@ -8,8 +8,6 @@ Scripts
 
 sec.py
 
-langedu\db.sqlite3
+/langedu/videos
 
-langedu\videos\
-
-langedu\subs\
+/langedu/subs

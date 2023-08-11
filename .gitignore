@@ -1,0 +1,15 @@
+__pycache__
+
+Lib
+
+Scripts
+
+.vscode
+
+sec.py
+
+langedu\db.sqlite3
+
+langedu\videos\
+
+langedu\subs\

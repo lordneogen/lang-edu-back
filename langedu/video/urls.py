@@ -4,8 +4,8 @@ from django.urls import path, include
 # from .views_cbf import RegisterView
 
 urlpatterns = [
-    path('video/', views.LIST_Videos.as_view()),
-    path('video/<int:id>/', views.LIST_Videos.as_view()),
+    path('', views.LIST_Videos.as_view()),
+    path('<int:id>/', views.LIST_Videos.as_view()),
 ]
 
 

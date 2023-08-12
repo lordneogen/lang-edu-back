@@ -17,9 +17,13 @@ class LIST_Videos(generics.ListAPIView, generics.RetrieveAPIView):
             queryset = Videos.objects.filter(pk=pk)
         else:
             queryset = self.get_queryset()
+
+        
         serializer = serializers.SER_Videos(data=queryset, many=True)
-        if serializer.is_valid():
-            return {'error':'Нету видео'}
+
+
+        if ( serializer.is_valid() or len(queryset)==0 ) and pk:
+            return Response({'error':'Нету видео'},status=404)
         if pk:
             return Response(serializer.data[0])
         else:

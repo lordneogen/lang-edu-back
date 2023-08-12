@@ -10,6 +10,7 @@ class Videos(models.Model):
     
     str  = models.FileField(upload_to="subs/",null= True)
 
+    user = models
 
     def __str__(self):
         return str(self.pk)+' '+ self.title

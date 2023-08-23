@@ -6,12 +6,23 @@ from . import serializers
 from .models import *
 from rest_framework.response import Response
 from rest_framework import status
-
+# Create your views here.
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from . import serializers
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
 class LIST_CR_Texts(generics.ListAPIView, generics.RetrieveAPIView):
     
     model=Text
     queryset =  model.objects.all()
     serializer_class = serializers.SER_CR_Texts
+    
+    
+    authentication_classes = [JWTAuthentication, SessionAuthentication]  
+    permission_classes = [IsAuthenticated]  
+
     
     def list(self, request, *args, **kwargs):
         
@@ -37,6 +48,10 @@ class RUD_Texts(generics.RetrieveUpdateDestroyAPIView):
     model=Text
     serializer_class = serializers.SER_RUD_Texts
     
+    
+    authentication_classes = [JWTAuthentication, SessionAuthentication]  
+    permission_classes = [IsAuthenticated]  
+
     
     def get(self, request, *args, **kwargs):
         try:

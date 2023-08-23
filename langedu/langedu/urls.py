@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
+from .views import RegisterApi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,4 +25,5 @@ urlpatterns = [
     path('login/',jwt_views.TokenObtainPairView.as_view()),
     path('login/verify',jwt_views.TokenVerifyView.as_view()),
     path('login/refresh/', jwt_views.TokenRefreshView.as_view()),
+    path('login/reg',RegisterApi.as_view())
 ]

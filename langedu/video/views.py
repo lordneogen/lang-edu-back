@@ -6,12 +6,20 @@ from . import serializers
 from .models import *
 from rest_framework.response import Response
 from rest_framework import status
-
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from . import serializers
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.response import Response
 class LIST_CR_Videos(generics.ListAPIView, generics.RetrieveAPIView):
     
     model=Videos
     queryset =  model.objects.all()
     serializer_class = serializers.SER_CR_Videos
+    
+    authentication_classes = [JWTAuthentication, SessionAuthentication]  
+    permission_classes = [IsAuthenticated]  
     
     def list(self, request, *args, **kwargs):
         
@@ -36,6 +44,9 @@ class RUD_Videos(generics.RetrieveUpdateDestroyAPIView):
     
     model=Videos
     serializer_class = serializers.SER_RUD_Videos
+    
+    authentication_classes = [JWTAuthentication, SessionAuthentication]  
+    permission_classes = [IsAuthenticated]  
     
     
     def get(self, request, *args, **kwargs):

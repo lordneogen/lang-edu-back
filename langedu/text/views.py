@@ -5,42 +5,80 @@ from rest_framework.permissions import AllowAny
 from . import serializers
 from .models import *
 from rest_framework.response import Response
+from rest_framework import status
 
-
-# Create your views here.
-class LIST_Text(generics.ListAPIView, generics.RetrieveAPIView):
-    queryset =  Text.objects.all()
-    serializer_class = serializers.SER_Text
-
+class LIST_CR_Texts(generics.ListAPIView, generics.RetrieveAPIView):
+    
+    model=Text
+    queryset =  model.objects.all()
+    serializer_class = serializers.SER_CR_Texts
+    
     def list(self, request, *args, **kwargs):
-        pk=kwargs.get('id')
-        if pk:
-            queryset = Text.objects.filter(pk=pk)
-        else:
-            queryset = self.get_queryset()
-        serializer = serializers.SER_Text(data=queryset, many=True)
-        if ( serializer.is_valid() or len(queryset)==0 ) and pk:
-            return Response({'error':'Нету видео'},status=404)
-        if pk:
-            return Response(serializer.data[0])
-        else:
-            return Response(serializer.data)
+        
+        serializer = self.serializer_class(data=self.get_queryset(), many=True)
+
+        if serializer.is_valid() or len(self.get_queryset())==0 :
+            return Response({'error':'Нету текстов'},status=404)
+        
+        return Response(serializer.data)
+        
     def post(self, request, *args, **kwargs):
-        ser = serializers.SER_Text(data=request.data)
-        if ser.is_valid():
-            ser.save()
-        return Response(ser.data)
+        
+        serializer = self.serializer_class(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+        return Response(serializer.data)
+
+class RUD_Texts(generics.RetrieveUpdateDestroyAPIView):
+    
+    
+    model=Text
+    serializer_class = serializers.SER_RUD_Texts
+    
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            pk = kwargs.get('id')
+            video = self.model.objects.get(pk=pk)
+        except self.model.DoesNotExist:
+            return Response({"error": "Нет такого текста"}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response({"error": "Неправильно введенные данные"}, status=status.HTTP_400_BAD_REQUEST)
+    
+        serializer = self.serializer_class(video)
+        return Response(serializer.data)
+        
     def delete(self, request, *args, **kwargs):
-        pk = kwargs.get('id')
-        if pk==None:
-            return Response("Обьекта не сущетсвует в списке")
-        obj = Text.objects.get(pk=pk)
-        obj.delete()
-        return Response("Item succsesfully delete!")
+        
+        try:
+            pk=kwargs.get('id')
+        except:
+            return Response({"error":"Непрравильно введенны данные"})
+        
+        if not self.model.objects.filter(pk=pk):
+            return Response({"error":"Нету такого текста"},status=404)
+        
+        queryset =self.model.objects.get(pk=pk)
+        queryset.delete()
+        
+        return Response({"result":"Текст удален"},status=200)
+    
     def put(self, request, *args, **kwargs):
-        pk = kwargs.get('id')
-        obj = Text.objects.get(id=pk)
-        ser = serializers.SER_Text(instance=obj, data=request.data)
-        if ser.is_valid():
-            ser.save()
-        return Response(ser.data)
+        
+        try:
+            pk=kwargs.get('id')
+        except:
+            return Response({"error":"Непрравильно введенны данные"})
+        
+        if not self.model.objects.get(pk=pk):
+            return Response({"error":"Нету такого текста"},status=404)
+        
+        queryset = self.model.objects.get(id=pk)
+        serializer = self.serializer_class(instance=queryset, data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+        return Response(serializer.data)

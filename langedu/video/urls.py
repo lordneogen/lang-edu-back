@@ -1,11 +1,10 @@
 from . import views
 from django.urls import path, include
-
 # from .views_cbf import RegisterView
 
 urlpatterns = [
-    path('', views.LIST_Videos.as_view()),
-    path('<int:id>/', views.LIST_Videos.as_view()),
+    path('', views.LIST_CR_Videos.as_view(),name='my-view-name'),
+    path('<int:id>/', views.RUD_Videos.as_view()),
 ]
 
 

@@ -4,12 +4,13 @@ from django.urls import path, include
 # from .views_cbf import RegisterView
 
 urlpatterns = [
-    path('',),
-    path('<int:id>/'),
-    path('<int:id>/video/'),
-    path('<int:id>/video/<int:vid>/'),
-    path('<int:id>/text/'),
-    path('<int:id>/text/<int:tid>/'),
-    path('<int:id>/voc/'),
-    path('<int:id>/voc/<int:vid>/'),
+    path('video/'),
+    path('video/page/<int:id>/'),
+    path('video/<int:id>/'),
+    path('text/'),
+    path('text/page/<int:id>/'),
+    path('text/<int:id>/'),
+    path('voc/'),
+    path('voc/page/<int:vid>/'),
+    path('voc/<int:vid>/'),
 ]

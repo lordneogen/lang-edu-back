@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from datetime import datetime, timedelta
 from sec import SECRET_KEY
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,3 +127,30 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SIMPLE_JWT = {
+  # It will work instead of the default serializer(TokenObtainPairSerializer).
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=10),  # Настройте желаемое время жизни
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Настройте желаемое время жизни
+    "TOKEN_OBTAIN_SERIALIZER": "users.serializers.AuthTokenSystem",
+  # ...
+}
+
+ALLOWED_HOSTS = ['*']
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+JWT_AUTH = {
+
+    'JWT_VERIFY': True,
+
+    'JWT_VERIFY_EXPIRATION': True,
+
+    'JWT_EXPIRATION_DELTA': timedelta(hours=48),
+
+    
+
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+
+
+}

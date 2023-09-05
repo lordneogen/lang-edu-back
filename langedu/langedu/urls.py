@@ -22,8 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('video/',include('video.urls')),
     path('text/',include('text.urls')),
-    path('login/',jwt_views.TokenObtainPairView.as_view()),
-    path('login/verify',jwt_views.TokenVerifyView.as_view()),
+    path('voc/',include('voc.urls')),
+    path('login/',jwt_views.TokenObtainSlidingView.as_view()),
+    path('login/verify/',jwt_views.TokenVerifyView.as_view()),
     path('login/refresh/', jwt_views.TokenRefreshView.as_view()),
-    path('login/reg',RegisterApi.as_view())
+    path('login/reg/',RegisterApi.as_view())
 ]
